@@ -1,84 +1,49 @@
-import os
-from dotenv import load_dotenv
-from langchain_groq import ChatGroq
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-load_dotenv()
-
-llm = ChatGroq(
-    model = "llama-3.3-70b-versatile",
-    api_key = os.getenv("GROQ_API_KEY")
-)
-
-loader = PyPDFLoader("data/phishing.pdf")
-documents = loader.load()
+from rag_chatbot import ask_question
+from scam_analyzer import analyze_scam
 
 
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size = 500,
-    chunk_overlap = 50
-)
+def process_query(user_input):
 
-chunks = splitter.split_documents(documents)
+    scam_keywords = [
+        "otp",
+        "bank",
+        "upi",
+        "click",
+        "link",
+        "won",
+        "prize",
+        "gift",
+        "urgent",
+        "refund",
+        "cashback",
+        "verify",
+        "password",
+        "account"
+    ]
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+    text = user_input.lower()
 
-db = Chroma.from_documents(
-    chunks,
-    embeddings
-)
+    if any(keyword in text for keyword in scam_keywords):
+        return analyze_scam(user_input)
 
-retriever = db.as_retriever()
+    return ask_question(user_input)
 
-def is_scam_query(query):
-    keywords = ["phishing" , "otp" , "upi" , "bank" , "fraud" , "scam" , "cyber" , "link" , "email" , "sms"]
 
-    query = query.lower()
+if __name__ == "__main__":
 
-    return any(word in query for word in keywords)
+    print("=" * 50)
+    print("        ScamShield AI")
+    print("=" * 50)
 
-def rag_response(query):
-    docs = retriever.invoke(query)
+    while True:
 
-    context = "\n".join(
-        [doc.page_content for doc in docs]
-    )
+        user_input = input("\nYou : ")
 
-    prompt = f"""
-Answer using the following context.
+        if user_input.lower() == "exit":
+            print("Goodbye!")
+            break
 
-Context:
-{context}
+        response = process_query(user_input)
 
-Question:
-{query}
-"""
-    return llm.invoke(prompt).content
-
-def normal_response(query):
-    return llm.invoke(query).content
-
-print("ScamShield AI")
-print("Type exit to quit\n")
-
-while True:
-    query = input("You : ")
-
-    if query.lower() == "exit":
-        break
-
-    if is_scam_query(query):
-        print("\nUsing RAG Workflow...\n")
-        answer = rag_response(query)
-
-    else:
-        print("\nUsing General AI...\n")
-        answer = normal_response(query)
-
-    print("Bot :" , answer)
-    print()
+        print("\nBot:\n")
+        print(response)

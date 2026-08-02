@@ -2,20 +2,18 @@ import os
 from dotenv import load_dotenv
 
 from langchain_groq import ChatGroq
-
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 load_dotenv()
 
-# Load PDF
 loader = PyPDFLoader("data/phishing.pdf")
 docs = loader.load()
 
 # Split text
+
 splitter = RecursiveCharacterTextSplitter(
     chunk_size=500,
     chunk_overlap=50
@@ -24,11 +22,13 @@ splitter = RecursiveCharacterTextSplitter(
 chunks = splitter.split_documents(docs)
 
 # Embeddings
+
 embeddings = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
 
-# Vector DB
+
+# Vector Database
 db = Chroma.from_documents(
     chunks,
     embeddings,
@@ -37,18 +37,17 @@ db = Chroma.from_documents(
 
 retriever = db.as_retriever()
 
-# LLM
+
+# Groq LLM
+
 llm = ChatGroq(
     model="llama-3.3-70b-versatile",
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-while True:
 
-    query = input("You: ")
-
-    if query.lower() == "exit":
-        break
+# Function for workflow
+def ask_question(query):
 
     docs = retriever.invoke(query)
 
@@ -57,7 +56,7 @@ while True:
     )
 
     prompt = f"""
-Use the context below to answer.
+Use the context below to answer the user's question.
 
 Context:
 {context}
@@ -68,5 +67,20 @@ Question:
 
     response = llm.invoke(prompt)
 
-    print("\nBot:", response.content)
-    print()
+    return response.content
+
+
+# Run only if this file is executed directly
+if __name__ == "__main__":
+
+    while True:
+
+        query = input("You: ")
+
+        if query.lower() == "exit":
+            break
+
+        answer = ask_question(query)
+
+        print("\nBot:", answer)
+        print()
