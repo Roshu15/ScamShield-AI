@@ -1,25 +1,48 @@
 from fastapi import FastAPI
-from workflow import is_scam_query, rag_response, normal_response
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from workflow import process_query
+
+
+app = FastAPI(
+    title="ScamShield AI",
+    description="AI powered online scam detection assistant",
+    version="1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+class ChatRequest(BaseModel):
+    message: str
+
 
 @app.get("/")
 def home():
     return {
-        "message" : "ScamShield AI API Running"
+        "message": "ScamShield AI API is running"
     }
 
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy"
+    }
+
+
 @app.post("/chat")
-def chat(request: dict):
-    query = request["question"]
+def chat(request: ChatRequest):
 
-    if is_scam_query(query):
-        answer = rag_response(query)
-
-    else:
-        answer = normal_response(query)
+    response = process_query(request.message)
 
     return {
-        "question" : query,
-        "answer" : answer
+        "user_message": request.message,
+        "response": response
     }
