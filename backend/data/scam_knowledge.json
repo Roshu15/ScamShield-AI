@@ -1,0 +1,110 @@
+[
+    {
+        "type": "Phishing",
+        "description": "Phishing scams use fake emails, messages or websites that appear to come from trusted organizations. The goal is often to steal login credentials or personal information.",
+        "warning_signs": [
+            "Urgent requests to act immediately",
+            "Suspicious links",
+            "Fake login pages",
+            "Requests for passwords or OTPs",
+            "Messages pretending to be from trusted organizations"
+        ],
+        "safety": [
+            "Do not click suspicious links",
+            "Verify the sender",
+            "Open the official website directly instead of using the message link",
+            "Never share passwords or OTPs"
+        ],
+        "source": "CERT-In Advisory CIAD-2024-0050"
+    },
+    {
+        "type": "UPI Fraud",
+        "description": "UPI related scams can involve fake payment requests, cashback offers, QR codes or social engineering intended to trick users into transferring money or revealing sensitive information.",
+        "warning_signs": [
+            "Unexpected payment requests",
+            "Fake cashback offers",
+            "Unknown UPI IDs",
+            "Requests for UPI PIN or OTP",
+            "Suspicious QR codes"
+        ],
+        "safety": [
+            "Verify the recipient before making a payment",
+            "Never share your UPI PIN",
+            "Do not approve unknown payment requests",
+            "Be careful with unexpected cashback or reward messages"
+        ],
+        "source": "NPCI Fraud Awareness"
+    },
+    {
+        "type": "Digital Arrest",
+        "description": "Digital arrest scams involve criminals pretending to be law enforcement or government officials and threatening victims with arrest or legal consequences unless money is transferred.",
+        "warning_signs": [
+            "Threats of immediate arrest",
+            "Fake government officials",
+            "Requests for security deposits",
+            "Pressure to transfer money",
+            "Video calls claiming to be investigations"
+        ],
+        "safety": [
+            "Do not panic",
+            "Do not transfer money because of threats",
+            "Verify the person's identity independently",
+            "Do not share sensitive personal or financial information"
+        ],
+        "source": "CERT-In Advisory CIAD-2024-0050"
+    },
+    {
+        "type": "Fake Customer Support",
+        "description": "Scammers may pretend to be customer support representatives and ask users to reveal sensitive information or install applications that can provide remote access to their devices.",
+        "warning_signs": [
+            "Unexpected customer support calls",
+            "Requests to install unknown applications",
+            "Requests for OTP or UPI PIN",
+            "Requests for remote access",
+            "Fake customer care numbers"
+        ],
+        "safety": [
+            "Use contact information from the official company website",
+            "Do not install unknown applications",
+            "Never share OTPs or UPI PINs",
+            "Do not give remote access to strangers"
+        ],
+        "source": "CERT-In Advisory"
+    },
+    {
+        "type": "Mistaken Money Transfer",
+        "description": "In this scam, a fraudster claims that money was accidentally transferred to the victim and pressures the victim to return the money quickly. Fake transaction receipts may be used to make the claim appear genuine.",
+        "warning_signs": [
+            "Unexpected claim of a money transfer",
+            "Pressure to return money immediately",
+            "Fake transaction screenshots",
+            "Threats or legal pressure",
+            "Requests to transfer money to another account"
+        ],
+        "safety": [
+            "Verify the transaction independently",
+            "Do not rely only on screenshots",
+            "Do not transfer money under pressure",
+            "Contact your bank through official channels"
+        ],
+        "source": "CERT-In Advisory CIAD-2024-0050"
+    },
+    {
+        "type": "Fake Cashback or Reward",
+        "description": "Scammers may send fake cashback or reward messages containing links or QR codes and attempt to trick users into making a payment or sharing sensitive information.",
+        "warning_signs": [
+            "Unexpected cashback messages",
+            "Prize or reward claims",
+            "Suspicious links",
+            "Unknown QR codes",
+            "Requests to enter UPI PIN"
+        ],
+        "safety": [
+            "Do not trust unexpected reward messages",
+            "Do not enter your UPI PIN to receive money",
+            "Verify offers through official applications",
+            "Avoid suspicious links and QR codes"
+        ],
+        "source": "NPCI Fraud Awareness"
+    }
+]

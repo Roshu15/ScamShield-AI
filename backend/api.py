@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-from workflow import process_query
+from workflow import run_workflow
 
 
 app = FastAPI(
@@ -11,13 +11,16 @@ app = FastAPI(
     version="1.0"
 )
 
+
+# Allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
+
 
 class ChatRequest(BaseModel):
     message: str
@@ -40,9 +43,6 @@ def health():
 @app.post("/chat")
 def chat(request: ChatRequest):
 
-    response = process_query(request.message)
+    result = run_workflow(request.message)
 
-    return {
-        "user_message": request.message,
-        "response": response
-    }
+    return result

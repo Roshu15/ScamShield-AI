@@ -1,49 +1,52 @@
-from rag_chatbot import ask_question
 from scam_analyzer import analyze_scam
 
 
-def process_query(user_input):
+def run_workflow(message):
 
-    scam_keywords = [
-        "otp",
-        "bank",
-        "upi",
-        "click",
-        "link",
-        "won",
-        "prize",
-        "gift",
-        "urgent",
-        "refund",
-        "cashback",
-        "verify",
-        "password",
-        "account"
-    ]
+    """
+    Main ScamShield AI workflow.
 
-    text = user_input.lower()
+    User message
+        ↓
+    Scam Analyzer
+        ↓
+    RAG knowledge base
+        ↓
+    Final scam analysis
+    """
 
-    if any(keyword in text for keyword in scam_keywords):
-        return analyze_scam(user_input)
+    if not message or not message.strip():
 
-    return ask_question(user_input)
+        return {
+            "success": False,
+            "message": "Please enter a message to analyze."
+        }
 
+    result = analyze_scam(message)
+
+    return {
+        "success": True,
+        "message": message,
+        "analysis": result
+    }
+
+
+# ==========================================
+# TEST WORKFLOW
+# ==========================================
 
 if __name__ == "__main__":
 
-    print("=" * 50)
-    print("        ScamShield AI")
-    print("=" * 50)
+    test_message = """
+    Congratulations! You have won ₹5,00,000.
+    Click this link immediately and enter your UPI PIN
+    to receive your prize.
+    """
 
-    while True:
+    result = run_workflow(test_message)
 
-        user_input = input("\nYou : ")
+    print("\n==============================")
+    print("       SCAMSHIELD WORKFLOW")
+    print("==============================\n")
 
-        if user_input.lower() == "exit":
-            print("Goodbye!")
-            break
-
-        response = process_query(user_input)
-
-        print("\nBot:\n")
-        print(response)
+    print(result["analysis"])
