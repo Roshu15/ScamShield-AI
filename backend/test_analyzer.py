@@ -1,18 +1,23 @@
 from scam_analyzer import analyze_scam
 
 
-message = """
-Congratulations! You have won ₹5,00,000.
-Click this link immediately and enter your UPI PIN
-to receive your prize.
-"""
+test_messages = [
+    "Someone called saying they are from the police and that I will be arrested unless I transfer ₹50000.",
+
+    "I received a message saying I won ₹2 lakh and I need to enter my UPI PIN to receive the money.",
+
+    "A person claiming to be customer support asked me to install an app and give remote access to my phone."
+]
 
 
-result = analyze_scam(message)
+for message in test_messages:
 
+    print("\n" + "=" * 70)
+    print("MESSAGE:")
+    print(message)
+    print("=" * 70)
 
-print("\n==============================")
-print("       SCAMSHIELD RESULT")
-print("==============================\n")
+    result = analyze_scam(message)
 
-print(result)
+    print("\nSCAMSHIELD AI ANALYSIS:\n")
+    print(result)
