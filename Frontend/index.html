@@ -1,135 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="AI-powered scam detection awareness." />
     <title>ScamShield AI</title>
-
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 12px 25px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #result {
-            margin-top: 25px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            white-space: pre-wrap;
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-    <h1>ScamShield AI</h1>
-
-    <p>
-        Paste a suspicious message below and let ScamShield AI analyze it.
-    </p>
-
-    <textarea
-        id="message"
-        placeholder="Example: You won ₹50,000. Click this link immediately...">
-    </textarea>
-
-    <br>
-
-    <button onclick="analyzeMessage()">
-        Analyze Message
-    </button>
-
-    <div id="result">
-        Result will appear here...
-    </div>
-
-
-    <script>
-
-        async function analyzeMessage() {
-
-            const message =
-                document.getElementById("message").value;
-
-            const result =
-                document.getElementById("result");
-
-            if (!message.trim()) {
-
-                result.innerText =
-                    "Please enter a message.";
-
-                return;
-            }
-
-            result.innerText = "Analyzing...";
-
-            try {
-
-                const response = await fetch(
-                    "http://127.0.0.1:8000/chat",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            message: message
-                        })
-                    }
-                );
-
-                const data = await response.json();
-
-                result.innerText = data.response;
-
-            }
-
-            catch (error) {
-
-                result.innerText =
-                    "Could not connect to ScamShield AI API.";
-
-                console.error(error);
-
-            }
-
-        }
-
-    </script>
-
-</body>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar container">
+        <a class="brand" href="#home"><i>✦</i>ScamShield <b>AI</b></a
+        ><button class="menu" aria-label="Open menu">☰</button>
+        <div class="links">
+          <a href="#home">Home</a><a href="#works">How It Works</a
+          ><a href="#tips">Safety Tips</a>
+        </div>
+        <small class="status"><span></span>AI Protection Active</small>
+      </nav>
+    </header>
+    <main id="home">
+      <section class="hero container">
+        <div>
+          <p class="eyebrow">YOUR DIGITAL SAFETY COMPANION</p>
+          <h1>Is that message trying to <em>scam you?</em></h1>
+          <p>
+            Paste a suspicious message and let ScamShield AI analyze the warning
+            signs before you take action.
+          </p>
+          <a href="#analyzer">Check a message →</a>
+        </div>
+        <div class="visual" aria-hidden="true">
+          <div class="ring"></div>
+          <div class="shield">✓</div>
+          <small>THREAT<br />SCAN</small>
+        </div>
+      </section>
+      <section class="analyzer container" id="analyzer">
+        <div class="card">
+          <div class="heading">
+            <div>
+              <p class="eyebrow">MESSAGE ANALYZER</p>
+              <h2>Analyze a Suspicious Message</h2>
+              <p>
+                Paste an SMS, email, WhatsApp message, payment request or any
+                suspicious content below.
+              </p>
+            </div>
+            <span>⌁ Secure analysis</span>
+          </div>
+          <label class="sr" for="message">Suspicious message</label>
+          <div class="textarea">
+            <textarea
+              id="message"
+              maxlength="5000"
+              placeholder="Example:&#10;Congratulations! You have won ₹5,00,000. Click this link and enter your UPI PIN to claim your reward..."
+            ></textarea
+            ><small id="count">0 / 5000</small>
+          </div>
+          <p class="error" id="error" role="alert"></p>
+          <div class="actions">
+            <button id="analyze" class="primary">
+              Analyze Message <b>→</b></button
+            ><button id="clear">Clear</button>
+          </div>
+        </div>
+        <div class="empty" id="empty">
+          <i>⌁</i>
+          <div>
+            <strong>Your message stays in your control</strong>
+            <p>Paste it above to begin analysis.</p>
+          </div>
+        </div>
+        <div class="loading hidden" id="loading">
+          <i>⌁</i>
+          <h3>ScamShield AI is analyzing the message...</h3>
+          <p>Checking scam patterns and trusted knowledge...</p>
+        </div>
+        <section class="results hidden" id="results">
+          <div class="result-head">
+            <div>
+              <p class="eyebrow">ANALYSIS COMPLETE</p>
+              <h2>Your safety assessment</h2>
+            </div>
+            <button id="another">Analyze another</button>
+          </div>
+          <div class="summary">
+            <article id="riskcard">
+              <small>RISK LEVEL</small><strong id="risk">—</strong>
+              <p id="riskdetail">Assessment ready</p>
+            </article>
+            <article>
+              <small>POSSIBLE SCAM TYPE</small>
+              <h3 id="type">Potential scam pattern</h3>
+              <p>Detected pattern</p>
+            </article>
+          </div>
+          <div class="insights">
+            <article>
+              <i class="warn">!</i>
+              <div>
+                <h3>Why it looks suspicious</h3>
+                <div id="why"></div>
+              </div>
+            </article>
+            <article>
+              <i class="safe">✓</i>
+              <div>
+                <h3>What you should do</h3>
+                <div id="action"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+      <section class="works container" id="works">
+        <div class="intro">
+          <p class="eyebrow">SIMPLE. PRIVATE. HELPFUL.</p>
+          <h2>How ScamShield works</h2>
+        </div>
+        <div class="grid">
+          <article>
+            <span>01</span>
+            <h3>Paste</h3>
+            <p>Paste the suspicious message exactly as you received it.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Analyze</h3>
+            <p>
+              Our AI workflow checks it against scam patterns and trusted
+              knowledge.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Protect</h3>
+            <p>Get a risk assessment and practical safety advice.</p>
+          </article>
+        </div>
+      </section>
+      <section class="tips" id="tips">
+        <div class="container">
+          <div class="intro">
+            <p class="eyebrow">STAY ONE STEP AHEAD</p>
+            <h2>Essential safety tips</h2>
+          </div>
+          <div class="grid tipsgrid">
+            <article>
+              🔐
+              <h3>Never share OTPs</h3>
+              <p>No legitimate service will ask for your one-time password.</p>
+            </article>
+            <article>
+              ▣
+              <h3>Never share UPI PIN</h3>
+              <p>You only need a UPI PIN to send money, never to receive it.</p>
+            </article>
+            <article>
+              ↗
+              <h3>Verify suspicious links</h3>
+              <p>Check the sender and website before opening any link.</p>
+            </article>
+            <article>
+              ◷
+              <h3>Don't panic under pressure</h3>
+              <p>Scammers create urgency. Pause before you respond.</p>
+            </article>
+            <article>
+              ☎
+              <h3>Use official support</h3>
+              <p>Use details from the official website.</p>
+            </article>
+            <article>
+              ↓
+              <h3>Don't install unknown apps</h3>
+              <p>Only download apps from trusted stores.</p>
+            </article>
+          </div>
+          <p class="disclaimer">
+            ScamShield AI provides awareness and guidance. Always verify
+            suspicious transactions or claims through official channels.
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container">
+        <a class="brand" href="#home"><i>✦</i>ScamShield <b>AI</b></a>
+        <p>AI powered protection against online scams.</p>
+        <small>Built for digital safety awareness.</small>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>
